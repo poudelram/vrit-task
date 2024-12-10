@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vrit task 1</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #a1d83b, #58dbf1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: rgb(189, 175, 175);
+            overflow: hidden;
+        }
+
+        /* Card Container */
+        .card-container {
+            width: 300px;
+            height: 400px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Card Styles */
+        .card {
+            position: absolute;
+            width: 90%;
+            height: 80%;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transform: scale(0.9) translateY(100px);
+            opacity: 0;
+            transition: opacity 0.5s, transform 0.5s, background 0.5s;
+        }
+
+        /* Card States */
+        .card.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .card.above {
+            opacity: 0.5;
+            transform: scale(0.95) translateY(-50px);
+        }
+
+        .card.below {
+            opacity: 0.5;
+            transform: scale(0.95) translateY(50px);
+        }
+
+        /* Card Content */
+        .card-content {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .card.active .card-content {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .card p {
+            font-size: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Card Container -->
+    <div class="card-container" id="cardContainer">
+        <!-- Card 1 -->
+        <div class="card" id="card1">
+            <div class="card-content">
+                <h3>card 1</h3>
+            </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="card" id="card2">
+            <div class="card-content">
+                <h3>Card 2</h3>
+            </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="card" id="card3">
+            <div class="card-content">
+                <h3>Card 3</h3>
+            </div>
+        </div>
+        <!-- Card 4 -->
+        <div class="card" id="card4">
+            <div class="card-content">
+                <h3>Card 4</h3>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Select all cards and initialize the current card index
+        const cards = document.querySelectorAll('.card');
+        let currentIndex = 0;
+
+        // Update card classes based on their position relative to the current card
+        function updateCards() {
+            cards.forEach((card, index) => {
+                card.classList.remove('active', 'above', 'below');
+
+                if (index === currentIndex) {
+                    card.classList.add('active');
+                } else if (index < currentIndex) {
+                    card.classList.add('above');
+                } else if (index > currentIndex) {
+                    card.classList.add('below');
+                }
+            });
+        }
+
+        // Scroll event listener to navigate between cards
+        let lastScrollTime = 0;
+        window.addEventListener('wheel', (e) => {
+            const now = Date.now();
+            if (now - lastScrollTime < 500) return; // Prevent rapid scrolling
+            lastScrollTime = now;
+
+            if (e.deltaY > 0 && currentIndex < cards.length - 1) {
+                currentIndex++; // Scroll down
+            } else if (e.deltaY < 0 && currentIndex > 0) {
+                currentIndex--; // Scroll up
+            }
+            updateCards();
+        });
+
+        // Initialize card positions
+        updateCards();
+    </script>
+</body>
+</html>
