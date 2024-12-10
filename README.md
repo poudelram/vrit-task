@@ -1,4 +1,4 @@
-# vrit-task
+# vrit-task-A
 ## Technology Choices and Rationale
 
 - **HTML/CSS**: Used for creating the structure and design of the UI, including responsive layouts.
